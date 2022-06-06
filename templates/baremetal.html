@@ -11,42 +11,37 @@
     <div id="nav">
     </div>
     <div class="wrapper">
-      <h1>Welcome to WOW</h1>
+      <h1>Welcome to Bare Metal Program</h1>
       <div class="form-list">
         <div class="form-item">
-          <span>用户名：</span>
-          <input type="text" name="username" id="name" />
+          <span>project_id：</span>
+          <input type="text" name="project_id" id="project_id" />
         </div>
         <div class="form-item">
-          <span>密码：</span>
-          <input type="text" name="userpwd" id="pwd" />
+          <span>bucket_name：</span>
+          <input type="text" name="bucket_name" id="bucket_name" />
         </div>
         <div class="btn">
-          <button onclick="submit()">注册</button>
+          <button onclick="submit()">开始部署</button>
         </div>
       </div>
-    </div>
-    <div>
-      <center>
-        <a href="https://storage.googleapis.com/wow-hk/WorldofWarcraft3.3.5a-zhCN.zip">客户端下载地址</a>
-      </center>
     </div>
   </body>
   <script src="{{ url_for('static', filename= 'js/jquery.min.js') }}"></script>
   <script>
     function submit() {
-      var name = $("#name")
+      var project_id = $("#project_id")
         .val()
         .trim();
-      var pwd = $("#pwd")
+      var bucket_name = $("#bucket_name")
         .val()
         .trim();
       $.ajax({
-        url: "/process_register",
+        url: "/install",
         type: "post",
         data: {
-          userName: name,
-          pwd: pwd
+          project_id: project_id,
+          bucket_name: bucket_name
         },
         success: function(res) {
           alert(res);
