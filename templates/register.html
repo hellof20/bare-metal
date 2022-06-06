@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>注册</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'css/comm.css') }}" />
+  </head>
+  <body>
+    <div id="nav">
+    </div>
+    <div class="wrapper">
+      <h1>Welcome to WOW</h1>
+      <div class="form-list">
+        <div class="form-item">
+          <span>用户名：</span>
+          <input type="text" name="username" id="name" />
+        </div>
+        <div class="form-item">
+          <span>密码：</span>
+          <input type="text" name="userpwd" id="pwd" />
+        </div>
+        <div class="btn">
+          <button onclick="submit()">注册</button>
+        </div>
+      </div>
+    </div>
+    <div>
+      <center>
+        <a href="https://storage.googleapis.com/wow-hk/WorldofWarcraft3.3.5a-zhCN.zip">客户端下载地址</a>
+      </center>
+    </div>
+  </body>
+  <script src="{{ url_for('static', filename= 'js/jquery.min.js') }}"></script>
+  <script>
+    function submit() {
+      var name = $("#name")
+        .val()
+        .trim();
+      var pwd = $("#pwd")
+        .val()
+        .trim();
+      $.ajax({
+        url: "/process_register",
+        type: "post",
+        data: {
+          userName: name,
+          pwd: pwd
+        },
+        success: function(res) {
+          alert(res);
+        }
+      });
+    }
+  </script>
+</html>
