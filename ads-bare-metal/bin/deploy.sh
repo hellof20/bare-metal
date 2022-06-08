@@ -32,10 +32,22 @@ gsutil cp example/google-ads.yaml gs://$BUCKET_NAME/config/google-ads.yaml
 gsutil cp example/data.csv gs://$BUCKET_NAME/input/input-example.txt
 
 $PIP install "google-auth>=1.24.0" "google-cloud-firestore>=1.6.2"
+
+#sleep 120
+echo 'sleep 120 to wait service enabled'
+sleep 120
+
 BUCKET_NAME=$BUCKET_NAME GOOGLE_CLOUD_PROJECT=$PROJECT_ID $PYTHON src/config.py
 
 # Deploy cloud functions
-sh bin/deploy-functions.sh
+gcloud iam service-accounts create forfunction --description="forfunction" --display-name="forfunction"
+SERVICE_ACCOUNT=forfunction@$PROJECT_ID.iam.gserviceaccount.com
+gcloud projects add-iam-policy-binding $PROJECT_ID --member="serviceAccount:$SERVICE_ACCOUNT" --role="roles/editor"
+gcloud functions deploy start --project $PROJECT_ID --quiet --timeout=540 --runtime python37 --trigger-http --source $SRC_DIR --service-account=$SERVICE_ACCOUNT
+gcloud functions deploy send_single_event --project $PROJECT_ID --quiet --timeout=540 --runtime python37 --trigger-http --source $SRC_DIR --service-account=$SERVICE_ACCOUNT
+gcloud functions deploy pingback_worker --project $PROJECT_ID --quiet --timeout=540 --runtime python37  --trigger-http --source $SRC_DIR --service-account=$SERVICE_ACCOUNT
+gcloud functions deploy scheduler --quiet --project $PROJECT_ID --timeout=540 --runtime python37 --trigger-topic $TOPIC_SCHEDULE --source $SRC_DIR --service-account=$SERVICE_ACCOUNT
+gcloud functions deploy external_event_listener --project $PROJECT_ID --quiet --timeout=540 --runtime python37 --trigger-topic $TOPIC_EXTERNAL --source $SRC_DIR --service-account=$SERVICE_ACCOUNT
 
 INPUT_PATH="gs://$BUCKET_NAME/input"
 echo "Deployment success, please upload input files to $INPUT_PATH every day."
