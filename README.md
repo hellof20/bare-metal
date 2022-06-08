@@ -15,3 +15,7 @@ pip3 install -r requirements.txt
 ```
 python3 baremetal.py
 ```
+
+
+### Access deploy server
+Open Web browser, input http://server_ip, Enter
