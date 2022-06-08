@@ -1,6 +1,6 @@
 # bare-metal
 
-### install deploy server
+### Install deploy server
 ```
 sudo -i
 git clone https://github.com/hellof20/bare-metal.git
@@ -11,7 +11,7 @@ pip3 install -r requirements.txt
 ```
 
 
-### run deploy server
+### Run deploy server
 ```
 python3 baremetal.py
 ```
