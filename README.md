@@ -1,4 +1,4 @@
-# bare-metal
+# Bare Metal Program
 
 ### Install deploy server
 ```
