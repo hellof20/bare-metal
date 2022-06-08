@@ -18,4 +18,4 @@ python3 baremetal.py
 
 
 ### Access deploy server
-Open Web browser, input http://server_ip, Enter
+Open Web browser, input <u>http://your_server_ip</u>, Enter
