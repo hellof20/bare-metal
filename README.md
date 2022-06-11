@@ -1,5 +1,8 @@
 # Bare Metal Program
 
+![image](https://user-images.githubusercontent.com/8756642/173190814-6c332b9d-ffad-4e0c-a892-637b8fd9426f.png)
+
+
 ### Install deploy server
 ```
 sudo -i
