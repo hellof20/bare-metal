@@ -4,15 +4,22 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>注册</title>
+    <title>部署</title>
     <link rel="stylesheet" href="{{ url_for('static', filename= 'css/comm.css') }}" />
   </head>
   <body>
     <div id="nav">
     </div>
     <div class="wrapper">
-      <h1>Welcome to Bare Metal Program</h1>
+      <h1>Welcome to Google Ads Program</h1>
       <div class="form-list">
+        <div class="form-item">
+          Google Ads项目:
+          <select>
+            <option value ="BareMetal">BareMetal</option>
+            <option value ="Lego">Lego</option>
+          </select>
+        </div>        
         <div class="form-item">
           <span>Project_ID:</span>
           <input type="text" name="project_id" id="project_id" />
@@ -22,31 +29,62 @@
           <input type="text" name="bucket_name" id="bucket_name" />
         </div>
         <div class="btn">
-          <button onclick="submit()">Click to Deploy</button>
+          <button id ="apply" onclick="apply()">Deploy</button>
+          <button id ="destroy" onclick="destroy()">Destroy</button>
         </div>
       </div>
     </div>
   </body>
   <script src="{{ url_for('static', filename= 'js/jquery.min.js') }}"></script>
   <script>
-    function submit() {
-      var project_id = $("#project_id")
-        .val()
-        .trim();
-      var bucket_name = $("#bucket_name")
-        .val()
-        .trim();
-      $.ajax({
-        url: "/install",
-        type: "post",
-        data: {
-          project_id: project_id,
-          bucket_name: bucket_name
-        },
-        success: function(res) {
-          alert(res);
-        }
-      });
+    function apply() {
+      var project_id = $("#project_id").val().trim();
+      var bucket_name = $("#bucket_name").val().trim();
+      var gcp_project = $(":selected").val();
+      if(project_id !== '' && bucket_name !== ''){
+        document.getElementById("apply").setAttribute("disabled", true);
+        $.ajax({
+          url: "/apply",
+          type: "post",
+          data: {
+            project_id: project_id,
+            bucket_name: bucket_name,
+            gcp_project: gcp_project
+          },
+          success: function(res) {
+            document.getElementById("apply").removeAttribute("disabled");
+            alert(res);
+          }
+        });
+      }
+      else{
+        alert("project id 或者bucket name不能为空")
+      }
+    }
+
+    function destroy() {
+      var project_id = $("#project_id").val().trim();
+      var bucket_name = $("#bucket_name").val().trim();
+      var gcp_project = $(":selected").val();      
+      if(project_id !== '' && bucket_name !== ''){
+        document.getElementById("destroy").setAttribute("disabled", true);
+        $.ajax({
+          url: "/destroy",
+          type: "post",
+          data: {
+            project_id: project_id,
+            bucket_name: bucket_name,
+            gcp_project: gcp_project
+          },
+          success: function(res) {
+            document.getElementById("destroy").removeAttribute("disabled");
+            alert(res);
+          }
+        });
+      }
+      else{
+        alert("project id 或者bucket name不能为空")
+      }
     }
   </script>
 </html>
